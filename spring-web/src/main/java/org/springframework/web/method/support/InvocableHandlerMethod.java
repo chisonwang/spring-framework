@@ -130,7 +130,7 @@ public class InvocableHandlerMethod extends HandlerMethod {
 	@Nullable
 	public Object invokeForRequest(NativeWebRequest request, @Nullable ModelAndViewContainer mavContainer,
 			Object... providedArgs) throws Exception {
-
+		// 分析方法的入参
 		Object[] args = getMethodArgumentValues(request, mavContainer, providedArgs);
 		if (logger.isTraceEnabled()) {
 			logger.trace("Arguments: " + Arrays.toString(args));
@@ -153,6 +153,7 @@ public class InvocableHandlerMethod extends HandlerMethod {
 		}
 
 		Object[] args = new Object[parameters.length];
+		// 参数类型一个一个匹配
 		for (int i = 0; i < parameters.length; i++) {
 			MethodParameter parameter = parameters[i];
 			parameter.initParameterNameDiscovery(this.parameterNameDiscoverer);
@@ -160,6 +161,7 @@ public class InvocableHandlerMethod extends HandlerMethod {
 			if (args[i] != null) {
 				continue;
 			}
+			// 适配
 			if (!this.resolvers.supportsParameter(parameter)) {
 				throw new IllegalStateException(formatArgumentError(parameter, "No suitable resolver"));
 			}

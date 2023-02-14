@@ -101,7 +101,8 @@ public class ServletInvocableHandlerMethod extends InvocableHandlerMethod {
 	 */
 	public void invokeAndHandle(ServletWebRequest webRequest, ModelAndViewContainer mavContainer,
 			Object... providedArgs) throws Exception {
-
+		// 执行方法，得到尚未处理的返回值
+		// 这个方法涉及参数绑定，比如判断方法要哪些参数，需要传入什么样的值
 		Object returnValue = invokeForRequest(webRequest, mavContainer, providedArgs);
 		setResponseStatus(webRequest);
 
@@ -120,6 +121,13 @@ public class ServletInvocableHandlerMethod extends InvocableHandlerMethod {
 		mavContainer.setRequestHandled(false);
 		Assert.state(this.returnValueHandlers != null, "No return value handlers");
 		try {
+			// 处理返回值
+			// 比如返回时map 那么就用MapMethodProcessor处理
+			// ModelAndView -> ModelAndViewMethodReturnValueHandler
+			// 如果方法上有@ResponeBody，那么就用RequestResponseBodyMethodProcessor来处理
+			// 如果方法上事String ，那么就用ViewNameMethodReturnValueHandler方法处理
+			// 每个处理器都 实现了HandlerMethodReturnValueHandler 接口，使用supportsReturnType() 来适配
+			// 适配上了后，再调用 handleReturnValue()
 			this.returnValueHandlers.handleReturnValue(
 					returnValue, getReturnValueType(returnValue), mavContainer, webRequest);
 		}

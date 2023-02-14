@@ -27,7 +27,7 @@ import java.nio.channels.ReadableByteChannel;
 import org.springframework.lang.Nullable;
 
 /**
- * @chosen对资源的抽象。它的每一个实现类都代表了一种资源的访问策略
+ * chosen对资源的抽象。它的每一个实现类都代表了一种资源的访问策略
  * 它的每一个实现类都代表了一种资源的访问策略
  * Resource的属性和方法可以理解成查看某个文件能看到的属性，
  * 比如长度，文件名，最后修改时间，创建时间，描述等等，

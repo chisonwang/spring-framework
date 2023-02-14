@@ -142,6 +142,9 @@ public class RequestParamMethodArgumentResolver extends AbstractNamedValueMethod
 			if (MultipartResolutionDelegate.isMultipartArgument(parameter)) {
 				return true;
 			}
+			// 简单数据类型的处理 String Integer等
+			//  enum,  String, CharSequence,Number,Date,  Temporal,   URI,   URL
+			//  Locale(year，month，localDate),   Class.
 			else if (this.useDefaultResolution) {
 				return BeanUtils.isSimpleProperty(parameter.getNestedParameterType());
 			}
@@ -159,9 +162,11 @@ public class RequestParamMethodArgumentResolver extends AbstractNamedValueMethod
 
 	@Override
 	@Nullable
+	// 获取值
 	protected Object resolveName(String name, MethodParameter parameter, NativeWebRequest request) throws Exception {
 		HttpServletRequest servletRequest = request.getNativeRequest(HttpServletRequest.class);
 
+		// 解析request的属性值
 		if (servletRequest != null) {
 			Object mpArg = MultipartResolutionDelegate.resolveMultipartArgument(name, parameter, servletRequest);
 			if (mpArg != MultipartResolutionDelegate.UNRESOLVABLE) {
@@ -170,6 +175,7 @@ public class RequestParamMethodArgumentResolver extends AbstractNamedValueMethod
 		}
 
 		Object arg = null;
+		// 文件上传之类
 		MultipartRequest multipartRequest = request.getNativeRequest(MultipartRequest.class);
 		if (multipartRequest != null) {
 			List<MultipartFile> files = multipartRequest.getFiles(name);
@@ -178,6 +184,7 @@ public class RequestParamMethodArgumentResolver extends AbstractNamedValueMethod
 			}
 		}
 		if (arg == null) {
+			// 直接获取值
 			String[] paramValues = request.getParameterValues(name);
 			if (paramValues != null) {
 				arg = (paramValues.length == 1 ? paramValues[0] : paramValues);

@@ -57,6 +57,7 @@ public class PathVariableMapMethodArgumentResolver implements HandlerMethodArgum
 	public Object resolveArgument(MethodParameter parameter, @Nullable ModelAndViewContainer mavContainer,
 			NativeWebRequest webRequest, @Nullable WebDataBinderFactory binderFactory) throws Exception {
 
+		// 获取URL上的属性了
 		@SuppressWarnings("unchecked")
 		Map<String, String> uriTemplateVars =
 				(Map<String, String>) webRequest.getAttribute(

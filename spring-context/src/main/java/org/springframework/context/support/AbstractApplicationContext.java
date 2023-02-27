@@ -554,7 +554,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 				// 【调用beanFactory的后置处理器】
 				// 跟postProcessBeanFactory的效果一样，但是只需要实现BeanFactoryPostProcessor接口即可,
 				// 我们可以为每种修改操作分别创建一个类来实现接口的BeanFactoryPostProcessor，这样的话至少在代码逻辑是解耦的
-				// 只是还是有点太重了
+				// 只是还是有点太重了 @Configuration @Component注解处理时机
 				// eg.同上
 				invokeBeanFactoryPostProcessors(beanFactory);
 
@@ -976,7 +976,8 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 		beanFactory.freezeConfiguration();
 
 		// Instantiate all remaining (non-lazy-init) singletons.
-		//初始化非延迟加载的单例bean
+		// 初始化非延迟加载的单例bean
+		// SmartInitializingSingleton
 		beanFactory.preInstantiateSingletons();
 	}
 

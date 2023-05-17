@@ -16,14 +16,14 @@
 
 package org.springframework.context.support;
 
-import java.io.IOException;
-
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextException;
 import org.springframework.lang.Nullable;
+
+import java.io.IOException;
 
 /**
  * Base class for {@link org.springframework.context.ApplicationContext}
@@ -132,7 +132,7 @@ public abstract class AbstractRefreshableApplicationContext extends AbstractAppl
 			//创建初级容器
 			DefaultListableBeanFactory beanFactory = createBeanFactory();
 			beanFactory.setSerializationId(getId());
-			//定制化容器
+			//定制化容器（是否允许BeanDefinition被覆盖，是否允许循环依赖使用）
 			customizeBeanFactory(beanFactory);
 			//解析xml文件，加载bean到容器中
 			loadBeanDefinitions(beanFactory);
@@ -178,6 +178,7 @@ public abstract class AbstractRefreshableApplicationContext extends AbstractAppl
 	@Override
 	public final ConfigurableListableBeanFactory getBeanFactory() {
 		synchronized (this.beanFactoryMonitor) {
+			//在getBeanFactory方法前，refreshBeanFactory中就已经把BeanFactory这个Spring初级容器初始化完成了。
 			if (this.beanFactory == null) {
 				throw new IllegalStateException("BeanFactory not initialized or already closed - " +
 						"call 'refresh' before accessing beans via the ApplicationContext");

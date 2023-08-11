@@ -49,6 +49,7 @@ public interface TransactionExecution {
 	/**
 	 * Return whether this transaction is completed, that is,
 	 * whether it has already been committed or rolled back.
+	 * 执行过 rollback 或者commit
 	 */
 	boolean isCompleted();
 

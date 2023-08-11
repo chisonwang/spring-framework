@@ -25,6 +25,7 @@ package org.springframework.transaction;
  * @see PlatformTransactionManager
  * @see ReactiveTransactionManager
  */
+// 后爹，先有了PlatformTransactionManager ，在spring5.2后才加了该接口，主要为了reactive而开发
 public interface TransactionManager {
 
 }

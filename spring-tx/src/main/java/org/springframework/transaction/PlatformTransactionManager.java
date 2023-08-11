@@ -42,6 +42,7 @@ import org.springframework.lang.Nullable;
  * @see org.springframework.transaction.support.TransactionTemplate
  * @see org.springframework.transaction.interceptor.TransactionInterceptor
  */
+// 所有oram框架都需要实现该接口
 public interface PlatformTransactionManager extends TransactionManager {
 
 	/**

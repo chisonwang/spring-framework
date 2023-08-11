@@ -324,6 +324,7 @@ public class ConfigurationClassPostProcessor implements BeanDefinitionRegistryPo
 		Set<ConfigurationClass> alreadyParsed = new HashSet<>(configCandidates.size());
 		do {
 			// 解析配置类 （包含类中的其他注解信息 ConfigurationClassParser.doProcessConfigurationClass）
+			// @Import(AutoConfigurationImportSelector.class) 入口
 			parser.parse(candidates);
 			parser.validate();
 			// 临时存放candidates解析完毕，封装得到的ConfigurationClass集合

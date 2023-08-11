@@ -536,7 +536,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 				// 【调用beanFactory的后置处理器】
 				// 跟postProcessBeanFactory的效果一样，但是只需要实现BeanFactoryPostProcessor接口即可,
 				// 我们可以为每种修改操作分别创建一个类来实现接口的BeanFactoryPostProcessor，这样的话至少在代码逻辑是解耦的
-				// 只是还是有点太重了 @Configuration @Component注解处理时机
+				// 只是还是有点太重了 @Configuration @Component，@Import注解处理时机
 				// eg.同上
 				invokeBeanFactoryPostProcessors(beanFactory);
 
@@ -635,7 +635,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 		// 空实现，留给子类实现
 		// 目的是在上下文环境中，解析各种${}占位符参数
 		// 比如在xml配置文件中${userName}
-		// getEnvironment().getSystemEnvironment().put("userName","chosen");
+		// getEnviroznment().getSystemEnvironment().put("userName","chosen");
 		initPropertySources();
 
 		// Validate that all properties marked as required are resolvable:

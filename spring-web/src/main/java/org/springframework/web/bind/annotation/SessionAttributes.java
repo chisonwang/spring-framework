@@ -16,14 +16,9 @@
 
 package org.springframework.web.bind.annotation;
 
-import java.lang.annotation.Documented;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Inherited;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-
 import org.springframework.core.annotation.AliasFor;
+
+import java.lang.annotation.*;
 
 /**
  * Annotation that indicates the session attributes that a specific handler uses.
@@ -59,6 +54,13 @@ import org.springframework.core.annotation.AliasFor;
 @Retention(RetentionPolicy.RUNTIME)
 @Inherited
 @Documented
+//  @SessionAttribute注解是Spring MVC框架中用于将模型数据存储到HttpSession对象中的注解。
+//  使用该注解可以方便地在多个请求之间共享模型数据，而无需每次都重新获取或创建数据
+// 通常情况下，控制器方法会通过Model对象将模型数据传递给视图进行渲染
+// 但是，在某些场景下，可能需要让模型数据在多个请求之间共享。例如，在用户登录成功后，
+// 可能需要将用户信息存储到Session中，并在后续的所有请求中都可以使用该用户信息。
+// 在这种情况下，可以使用@SessionAttribute注解将模型数据存储到Session中。
+// 该注解有两个参数：value和types，分别用于指定Session属性的名称和类型
 public @interface SessionAttributes {
 
 	/**

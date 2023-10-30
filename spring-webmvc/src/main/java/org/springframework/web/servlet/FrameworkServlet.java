@@ -698,6 +698,7 @@ public abstract class FrameworkServlet extends HttpServletBean implements Applic
 		wac.setServletConfig(getServletConfig());
 		wac.setNamespace(getNamespace());
 		// 监听器  委托模式
+		// new ContextRefreshListener() ->  FrameworkServlet.this.onApplicationEvent(event) ->  DispatchServlet.onRefresh
 		// 执行到 DispatchServlet中的onRefresh方法-》initStrategies() 初始化策略
 		wac.addApplicationListener(new SourceFilteringListener(wac, new ContextRefreshListener()));
 

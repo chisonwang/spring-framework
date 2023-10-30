@@ -45,6 +45,14 @@ import java.lang.annotation.Target;
 @Target({ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
+// @InitBinder注解可以作用在被@Controller注解的类的方法上，
+// 表示为当前控制器注册一个属性编辑器，用于对WebDataBinder进行初始化，
+// 且只对当前的Controller有效。
+// @InitBinder 标注的方法会被多次执行的，也就是说来一次请求就会执行一次@InitBinder注解方法的内容。
+// @InitBinder对@RequestBody的请求参数是失效的.
+// 因为@InitBinder用于初始化DataBinder的数据绑定、类型转换等场景；
+// @RequestBody的数据解析、格式转换是通过消息转换器来完成的，所以即使自定义了属性编辑器，对@RequestBody的参数是不生效的，@RequestBody的数据绑定转换，如果是JSON格式的数据一般都是交给了JACKSON来完成的
+
 public @interface InitBinder {
 
 	/**

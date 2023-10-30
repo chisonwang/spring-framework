@@ -16,13 +16,13 @@
 
 package org.springframework.web.servlet.mvc;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.springframework.lang.Nullable;
 import org.springframework.web.HttpRequestHandler;
 import org.springframework.web.servlet.HandlerAdapter;
 import org.springframework.web.servlet.ModelAndView;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * Adapter to use the plain {@link org.springframework.web.HttpRequestHandler}
@@ -38,6 +38,9 @@ import org.springframework.web.servlet.ModelAndView;
  * @see LastModified
  * @see SimpleControllerHandlerAdapter
  */
+// 这是一个SPI类，他支持的类型是  HttpRequestHandler.class
+// 这是一个SPI类，他支持的类型是  HttpRequestHandler.class
+// 这是一个SPI类，他支持的类型是  HttpRequestHandler.class
 public class HttpRequestHandlerAdapter implements HandlerAdapter {
 
 	@Override

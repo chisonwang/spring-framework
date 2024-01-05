@@ -16,18 +16,6 @@
 
 package org.springframework.web.servlet.support;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.LinkedHashSet;
-import java.util.Set;
-import java.util.concurrent.TimeUnit;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.springframework.http.CacheControl;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -37,6 +25,13 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.HttpSessionRequiredException;
 import org.springframework.web.context.support.WebApplicationObjectSupport;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.*;
+import java.util.concurrent.TimeUnit;
+
 
 /**
  * Convenient superclass for any kind of web content generator,
@@ -378,13 +373,19 @@ public abstract class WebContentGenerator extends WebApplicationObjectSupport {
 		// Check whether we should support the request method.
 		String method = request.getMethod();
 		// 可以自定义RequestMappingHandlerAdapter这个Bean来设置supportedMethods，默认是null
+		// @Bean
+		// public RequestMappingHandlerAdapter requestMappingHandlerAdapter(){
+		// 		RequestMappingHandlerAdapter  adapter = new RequestMappingHandlerAdapter();
+		// 		adapter.setSupportedMethods(HttpMethod.GET);
+		// 		return adapter;
+		// }
 		// 表示全局限制请求方法，就是Controller层面支持get，但是如果supportedMethods没有get，也是访问不成功
 		if (this.supportedMethods != null && !this.supportedMethods.contains(method)) {
 			throw new HttpRequestMethodNotSupportedException(method, this.supportedMethods);
 		}
 
 		// Check whether a session is required.
-		// 也可以通过自定义RequestMappingHandlerAdapter这个Bean来设置requeireSession，默认为false
+		// 也可以通过自定义RequestMappingHandlerAdapter这个Bean来设置requireSession，默认为false
 		// 标识请求找那个一定要有session
 		if (this.requireSession && request.getSession(false) == null) {
 			throw new HttpSessionRequiredException("Pre-existing session required but none found");

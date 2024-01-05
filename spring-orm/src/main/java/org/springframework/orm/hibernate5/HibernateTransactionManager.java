@@ -16,22 +16,9 @@
 
 package org.springframework.orm.hibernate5;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-
-import javax.persistence.PersistenceException;
-import javax.sql.DataSource;
-
-import org.hibernate.ConnectionReleaseMode;
-import org.hibernate.FlushMode;
-import org.hibernate.HibernateException;
-import org.hibernate.Interceptor;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
+import org.hibernate.*;
 import org.hibernate.engine.spi.SessionImplementor;
 import org.hibernate.resource.transaction.spi.TransactionStatus;
-
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanFactoryAware;
@@ -43,16 +30,17 @@ import org.springframework.jdbc.datasource.DataSourceUtils;
 import org.springframework.jdbc.datasource.JdbcTransactionObjectSupport;
 import org.springframework.jdbc.datasource.TransactionAwareDataSourceProxy;
 import org.springframework.lang.Nullable;
-import org.springframework.transaction.CannotCreateTransactionException;
-import org.springframework.transaction.IllegalTransactionStateException;
-import org.springframework.transaction.InvalidIsolationLevelException;
-import org.springframework.transaction.TransactionDefinition;
-import org.springframework.transaction.TransactionSystemException;
+import org.springframework.transaction.*;
 import org.springframework.transaction.support.AbstractPlatformTransactionManager;
 import org.springframework.transaction.support.DefaultTransactionStatus;
 import org.springframework.transaction.support.ResourceTransactionManager;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
 import org.springframework.util.Assert;
+
+import javax.persistence.PersistenceException;
+import javax.sql.DataSource;
+import java.sql.Connection;
+import java.sql.ResultSet;
 
 /**
  * {@link org.springframework.transaction.PlatformTransactionManager}
@@ -441,6 +429,7 @@ public class HibernateTransactionManager extends AbstractPlatformTransactionMana
 				(this.hibernateManagedSession && txObject.hasHibernateManagedTransaction()));
 	}
 
+	// //两个holder都管！
 	@Override
 	@SuppressWarnings("deprecation")
 	protected void doBegin(Object transaction, TransactionDefinition definition) {
@@ -455,7 +444,6 @@ public class HibernateTransactionManager extends AbstractPlatformTransactionMana
 		}
 
 		Session session = null;
-
 		try {
 			if (!txObject.hasSessionHolder() || txObject.getSessionHolder().isSynchronizedWithTransaction()) {
 				Interceptor entityInterceptor = getEntityInterceptor();
@@ -468,6 +456,7 @@ public class HibernateTransactionManager extends AbstractPlatformTransactionMana
 				txObject.setSession(newSession);
 			}
 
+			//从sessionFactory拿个新session，也会产生一个新连接
 			session = txObject.getSessionHolder().getSession();
 
 			boolean holdabilityNeeded = this.allowResultAccessAfterCompletion && !txObject.isNewSession();
@@ -478,6 +467,7 @@ public class HibernateTransactionManager extends AbstractPlatformTransactionMana
 					if (logger.isDebugEnabled()) {
 						logger.debug("Preparing JDBC Connection of Hibernate Session [" + session + "]");
 					}
+					//原来直接把session后面的connection也放入holder
 					Connection con = ((SessionImplementor) session).connection();
 					Integer previousIsolationLevel = DataSourceUtils.prepareConnectionForTransaction(con, definition);
 					txObject.setPreviousIsolationLevel(previousIsolationLevel);

@@ -274,7 +274,7 @@ public class WebMvcConfigurationSupport implements ApplicationContextAware, Serv
 	 * Return a {@link RequestMappingHandlerMapping} ordered at 0 for mapping
 	 * requests to annotated controllers.
 	 */
-	@Bean
+	@Beanh
 	@SuppressWarnings("deprecation")
 	public RequestMappingHandlerMapping requestMappingHandlerMapping(
 			@Qualifier("mvcContentNegotiationManager") ContentNegotiationManager contentNegotiationManager,

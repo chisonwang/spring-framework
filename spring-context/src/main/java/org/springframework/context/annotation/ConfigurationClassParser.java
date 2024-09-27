@@ -263,21 +263,29 @@ class ConfigurationClassParser {
 		}
 
 		// Process any @ComponentScan annotations
+		// @ComponentScan
+		// 处理任何 @ComponentScan 注解
+		// 获取当前类（sourceClass）的所有 @ComponentScan 和 @ComponentScans 注解的属性
 		Set<AnnotationAttributes> componentScans = AnnotationConfigUtils.attributesForRepeatable(
 				sourceClass.getMetadata(), ComponentScans.class, ComponentScan.class);
+		// 如果存在 @ComponentScan 或 @ComponentScans 注解，并且该类没有被条件评估排除
 		if (!componentScans.isEmpty() &&
 				!this.conditionEvaluator.shouldSkip(sourceClass.getMetadata(), ConfigurationPhase.REGISTER_BEAN)) {
 			for (AnnotationAttributes componentScan : componentScans) {
 				// The config class is annotated with @ComponentScan -> perform the scan immediately
+				// 对标有 @ComponentScan 的配置类进行立即扫描
 				Set<BeanDefinitionHolder> scannedBeanDefinitions =
 						this.componentScanParser.parse(componentScan, sourceClass.getMetadata().getClassName());
 				// Check the set of scanned definitions for any further config classes and parse recursively if needed
+				// 检查扫描到的定义中是否有任何进一步的配置类，如果需要，则递归解析
 				for (BeanDefinitionHolder holder : scannedBeanDefinitions) {
 					BeanDefinition bdCand = holder.getBeanDefinition().getOriginatingBeanDefinition();
 					if (bdCand == null) {
 						bdCand = holder.getBeanDefinition();
 					}
+					// 检查 BeanDefinition 是否是一个配置类的候选者
 					if (ConfigurationClassUtils.checkConfigurationClassCandidate(bdCand, this.metadataReaderFactory)) {
+						// 如果是，递归解析它
 						parse(bdCand.getBeanClassName(), holder.getBeanName());
 					}
 				}

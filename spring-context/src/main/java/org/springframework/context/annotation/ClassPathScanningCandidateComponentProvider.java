@@ -196,8 +196,10 @@ public class ClassPathScanningCandidateComponentProvider implements EnvironmentC
 	protected void registerDefaultFilters() {
 		// 注册component类型注解的的过滤器
 		this.includeFilters.add(new AnnotationTypeFilter(Component.class));
+		// 获取当前类的类加载器
 		ClassLoader cl = ClassPathScanningCandidateComponentProvider.class.getClassLoader();
 		try {
+			// 尝试添加一个过滤器来包括带有JSR-250 'javax.annotation.ManagedBean'注解的类
 			this.includeFilters.add(new AnnotationTypeFilter(
 					((Class<? extends Annotation>) ClassUtils.forName("javax.annotation.ManagedBean", cl)), false));
 			logger.trace("JSR-250 'javax.annotation.ManagedBean' found and supported for component scanning");
@@ -206,6 +208,7 @@ public class ClassPathScanningCandidateComponentProvider implements EnvironmentC
 			// JSR-250 1.1 API (as included in Java EE 6) not available - simply skip.
 		}
 		try {
+			// 尝试添加一个过滤器来包括带有JSR-330 'javax.inject.Named'注解的类
 			this.includeFilters.add(new AnnotationTypeFilter(
 					((Class<? extends Annotation>) ClassUtils.forName("javax.inject.Named", cl)), false));
 			logger.trace("JSR-330 'javax.inject.Named' annotation found and supported for component scanning");
